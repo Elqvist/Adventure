@@ -1,7 +1,9 @@
 import java.util.Scanner;
 
 public class Adventure {
-    static void start() {
+    private Room currentRoom;
+
+    void start() {
         Boolean exit = false;
         Scanner scanner = new Scanner(System.in);
 
@@ -14,7 +16,7 @@ public class Adventure {
         Room room7 = new Room("The Garden", "An overgrown garden surrounded by high stone walls and strange, glowing flowers.");
         Room room8 = new Room("The Laboratory", "A dusty laboratory filled with strange bottles, old notes, and mysterious equipment.");
         Room room9 = new Room("The Tower", "A narrow stone tower with a spiral staircase leading to a small room overlooking the land.");
-        Room currentRoom = room1;
+        currentRoom = room1;
 
         room1.setEast(room2);
         room1.setSouth(room4);
@@ -38,15 +40,15 @@ public class Adventure {
 
 
         while(exit == false){
-
+            System.out.println();
             System.out.print("What do you want to do?: ");
             String decision = scanner.nextLine();
 
             switch(decision.toLowerCase()){
-                case "go north", "north" -> System.out.println("Going north!");
-                case "go south", "south" -> System.out.println("Going south!");
-                case "go west", "west" -> System.out.println("Going west!");
-                case "go east", "east" -> System.out.println("Going east!");
+                case "go north", "north" -> move("north");
+                case "go south", "south" -> move("south");
+                case "go west", "west" -> move("west");
+                case "go east", "east" -> move("east");
                 case "look", "look around" -> System.out.println("You are in " + currentRoom.getName() + ".\n" + currentRoom.getDescription() + "\n");
                 case "exit" -> {
                     System.out.println("Exiting game!");
@@ -69,4 +71,24 @@ public class Adventure {
         }
         scanner.close();
     }
+
+    public void move(String direction){
+        Room desiredRoom = switch (direction){
+            case "north" -> currentRoom.getNorth();
+            case "east" -> currentRoom.getEast();
+            case "south" -> currentRoom.getSouth();
+            case "west" -> currentRoom.getWest();
+            default -> null;
+        };
+
+        if(desiredRoom != null){
+            currentRoom = desiredRoom;
+            System.out.println("You enter " + currentRoom.getName());
+        }
+        else{
+            System.out.println("You can't go that way!");
+        }
+    }
+
+
 }
