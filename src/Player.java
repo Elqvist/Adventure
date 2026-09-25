@@ -10,17 +10,6 @@ public class Player {
         return currentRoom;
     }
 
-    public void action(String decision){
-        switch(decision.toLowerCase()){
-            case "go north", "north" -> move("north");
-            case "go south", "south" -> move("south");
-            case "go west", "west" -> move("west");
-            case "go east", "east" -> move("east");
-            case "look", "look around" -> System.out.println("You are in " + currentRoom.getName() + ".\n" + currentRoom.getDescription() + "\n");
-            default -> System.out.println("Command not found! Write help for instructions.");
-        }
-    }
-
     public boolean move(String direction){
         Room desiredRoom = switch (direction){
             case "north" -> currentRoom.getNorth();
