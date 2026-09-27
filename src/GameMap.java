@@ -5,7 +5,7 @@ public class GameMap {
         return startRoom;
     }
 
-    public GameMap buildMap;{
+    public void buildMap() {
         Room room1 = new Room("The Entrance Hall", "A dark entrance hall with two wooden doors and dusty paintings on the walls.");
         Room room2 = new Room("The Library", "Tall bookshelves cover the walls, filled with ancient books and forgotten secrets.");
         Room room3 = new Room("The Kitchen", "A small, abandoned kitchen with rusty pots, broken chairs, and a cold fireplace.");

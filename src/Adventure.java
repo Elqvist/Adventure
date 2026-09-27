@@ -1,7 +1,13 @@
 public class Adventure {
 
-    private GameMap gameMap = new GameMap();
-    private Player player = new Player(gameMap.getStartRoom());
+    private GameMap gameMap;
+    private Player player;
+
+    public Adventure() {
+        gameMap = new GameMap();
+        gameMap.buildMap();
+        player = new Player(gameMap.getStartRoom());
+    }
 
     public boolean go(String direction){
         return player.move(direction);
