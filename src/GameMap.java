@@ -5,8 +5,14 @@ public class GameMap {
         return startRoom;
     }
 
+    Item lantern = new Item("lantern", "a shiny brass lantern");
+    Item key = new Item("key", "an old rusty key");
+
     public void buildMap() {
         Room room1 = new Room("The Entrance Hall", "A dark entrance hall with two wooden doors and dusty paintings on the walls.");
+        room1.addItem(lantern);
+        room1.addItem(key);
+
         Room room2 = new Room("The Library", "Tall bookshelves cover the walls, filled with ancient books and forgotten secrets.");
         Room room3 = new Room("The Kitchen", "A small, abandoned kitchen with rusty pots, broken chairs, and a cold fireplace.");
         Room room4 = new Room("The Basement", "A cold and damp basement filled with wooden crates and strange noises in the darkness.");

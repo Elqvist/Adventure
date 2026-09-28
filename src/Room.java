@@ -1,4 +1,4 @@
-import java.util.Locale;
+import java.util.ArrayList;
 
 public class Room {
     private String name;
@@ -9,9 +9,37 @@ public class Room {
     private Room south;
     private Room west;
 
+    private ArrayList<Item> items;
+
     public Room(String name, String description) {
         this.name = name;
         this.description = description;
+        this.items = new ArrayList<>();
+    }
+
+    public Item findItem(String shortName){
+        Boolean found = false;
+
+        for (Item item : items) {
+
+            if (item.getShortName().equals(shortName)) {
+                return item;
+            }
+        }
+
+        return null;
+    }
+
+    public void addItem(Item item){
+        items.add(item);
+    }
+
+    public void removeItem(Item item){
+        items.remove(item);
+    }
+
+    public ArrayList<Item> getItems(){
+        return items;
     }
 
     public void setNorth(Room north) {
