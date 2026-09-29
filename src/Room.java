@@ -18,11 +18,9 @@ public class Room {
     }
 
     public Item findItem(String shortName){
-        Boolean found = false;
-
         for (Item item : items) {
 
-            if (item.getShortName().equals(shortName)) {
+            if (item.getShortName().equalsIgnoreCase(shortName)) {
                 return item;
             }
         }

@@ -45,14 +45,9 @@ public class Player {
     }
 
     public Item takeItem(String shortName){
-        Item desiredItem = null;
-        if(currentRoom.getItems() != null){
-            for(Item item : currentRoom.getItems()){
-                if(item.getShortName().equalsIgnoreCase(shortName)){
-                    addItem(item);
-                    desiredItem = item;
-                }
-            }
+        Item desiredItem = currentRoom.findItem(shortName);
+        if(desiredItem != null){
+            addItem(desiredItem);
             currentRoom.removeItem(desiredItem);
         }
 
