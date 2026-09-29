@@ -46,13 +46,18 @@ public class Adventure {
     }
 
     public String take(String shortName){
-        Item item = player.takeItem(shortName);
 
-        if(item != null){
-            return "You picked up the " + item.getShortName();
+        if(player.getInv().size() < 5){
+            Item item = player.takeItem(shortName);
+            if(item != null){
+                return "You picked up the " + item.getShortName();
+            }
+            else{
+                return "There are no items like " + shortName + " in the room";
+            }
         }
         else{
-            return "There are no items like " + shortName + " in the room";
+            return "There is not enough space in your inventory";
         }
 
     }

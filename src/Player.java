@@ -57,7 +57,6 @@ public class Player {
 
     public Item dropItem(String shortName){
         Item desiredItem = null;
-        if(inventory != null){
             for(Item item : inventory){
                 if(item.getShortName().equalsIgnoreCase(shortName)){
                     currentRoom.addItem(item);
@@ -65,10 +64,7 @@ public class Player {
                 }
             }
             removeItem(desiredItem);
-        }
-
-        return desiredItem;
-
+            return desiredItem;
     }
 
 }

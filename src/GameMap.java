@@ -5,22 +5,60 @@ public class GameMap {
         return startRoom;
     }
 
-    Item lantern = new Item("lantern", "a shiny brass lantern");
-    Item key = new Item("key", "an old rusty key");
-
     public void buildMap() {
         Room room1 = new Room("The Entrance Hall", "A dark entrance hall with two wooden doors and dusty paintings on the walls.");
+        Item lantern = new Item("lantern", "a shiny brass lantern");
+        Item key = new Item("key", "an old rusty key");
         room1.addItem(lantern);
         room1.addItem(key);
 
         Room room2 = new Room("The Library", "Tall bookshelves cover the walls, filled with ancient books and forgotten secrets.");
+        Item book = new Item("book", "An old dust covered book");
+        Item lighter = new Item("lighter", "An antique Ronson lighter");
+        room2.addItem(book);
+        room2.addItem(lighter);
+
         Room room3 = new Room("The Kitchen", "A small, abandoned kitchen with rusty pots, broken chairs, and a cold fireplace.");
+        Item knife = new Item("knife", "a small kitchen knife");
+        Item matches = new Item("matches", "a box of matches");
+        room3.addItem(knife);
+        room3.addItem(matches);
+
         Room room4 = new Room("The Basement", "A cold and damp basement filled with wooden crates and strange noises in the darkness.");
+        Item crowbar = new Item("crowbar", "a heavy iron crowbar");
+        Item rope = new Item("rope", "a long coiled rope");
+        room4.addItem(crowbar);
+        room4.addItem(rope);
+
         Room room5 = new Room("The Secret Room", "A hidden room behind a bookshelf, containing a mysterious table.");
+        Item crystal = new Item("crystal", "a glowing blue crystal");
+        Item secretKey = new Item("secret key", "a small key with a strange symbol");
+        room5.addItem(crystal);
+        room5.addItem(secretKey);
+
         Room room6 = new Room("The Bedroom", "A quiet bedroom with an old bed and a cracked mirror.");
+        Item locket = new Item("locket", "a silver locket with an engraved symbol");
+        Item cookies = new Item("cookies", "a cake with stale cookies");
+        room6.addItem(locket);
+        room6.addItem(cookies);
+
         Room room7 = new Room("The Garden", "An overgrown garden surrounded by high stone walls and strange, glowing flowers.");
+        Item apple = new Item("Apple", "a shiny red apple");
+        Item shovel = new Item("shovel", "a muddy garden shovel");
+        room7.addItem(apple);
+        room7.addItem(shovel);
+
         Room room8 = new Room("The Laboratory", "A dusty laboratory filled with strange bottles, old notes, and mysterious equipment.");
+        Item redPotion = new Item("red potion", "a small bottle of red potion");
+        Item bluePotion = new Item("blue potion", "a small bottle of blue potion");
+        room8.addItem(redPotion);
+        room8.addItem(bluePotion);
+
         Room room9 = new Room("The Tower", "A narrow stone tower with a spiral staircase leading to a small room overlooking the land.");
+        Item lens = new Item("lens", "a polished telescope lens");
+        Item compass = new Item("compass", "a small golden compass");
+        room9.addItem(lens);
+        room9.addItem(compass);
 
         startRoom = room1;
 
