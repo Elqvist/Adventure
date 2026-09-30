@@ -4,6 +4,7 @@ public class Player {
 
     private Room currentRoom;
     private ArrayList<Item> inventory;
+    private int health = 100;
 
     public Player(Room startRoom){
         currentRoom = startRoom;
@@ -12,6 +13,40 @@ public class Player {
 
     public Room getCurrentRoom() {
         return currentRoom;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public Item findItem(String shortName) {
+        for (Item item : inventory) {
+
+            if (item.getShortName().equalsIgnoreCase(shortName)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public EatOutcome eat(String shortName) {
+        Item item = findItem(shortName); //Checker inventory
+        if (item == null) {
+            item = currentRoom.findItem(shortName); //Checker inventory
+        }
+
+        if (item == null) {
+            return new EatOutcome(EatResult.NOT_FOUND, null, 0);
+        }
+        if (!(item instanceof Food)) {
+            return new EatOutcome(EatResult.NOT_FOOD, item.getLongName(), 0);
+        }
+
+        Food food = (Food) item;
+        health += food.getHealthPoints();
+        removeItem(food);
+        currentRoom.removeItem(food);
+        return new EatOutcome(EatResult.EATEN, food.getLongName(), food.getHealthPoints());
     }
 
     public boolean move(String direction){

@@ -25,6 +25,9 @@ public class UserInterface {
             else if(decision.length() >= 5 && decision.substring(0, 5).equalsIgnoreCase("drop ")){
                 System.out.println(adventure.drop(decision.substring(5)));
             }
+            else if(decision.length() >= 4 && decision.substring(0, 4).equalsIgnoreCase("eat ")){
+                System.out.println(adventure.eat(decision.substring(4)));
+            }
             else{
                 switch(decision){
                     case "go north", "north" -> {
@@ -59,6 +62,7 @@ public class UserInterface {
                             System.out.println("You cannot go this way!");
                         }
                     }
+                    case "health", "show health" -> System.out.println(adventure.getHealth());
                     case "look", "look around" -> System.out.println(adventure.look());
                     case "inventory" -> System.out.println(adventure.printInv());
                     case "help" -> help();
@@ -81,7 +85,9 @@ public class UserInterface {
         System.out.println("Exit: Exit game");
         System.out.println("Take: Pick up an item from a room");
         System.out.println("Drop: Drop an item in a room");
+        System.out.println("Eat: Eats a suitable item directly from your inventory or from the room");
         System.out.println("Inventory: View items in your inventory");
+        System.out.println("Health: Shows your current health status");
         System.out.println();
     }
 

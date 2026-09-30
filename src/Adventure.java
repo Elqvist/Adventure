@@ -27,6 +27,53 @@ public class Adventure {
         return result;
     }
 
+    public String eat(String shortName){
+        EatOutcome outcome = player.eat(shortName);
+
+        switch (outcome.getResult()){
+            case NOT_FOUND -> {
+                return "There is nothing like " + shortName + " to eat around here";
+            }
+            case NOT_FOOD -> {
+                return "You cannot eat " + outcome.getItemName() + ".";
+            }
+            case EATEN -> {
+                String result = "You ate " + outcome.getItemName() + ".";
+
+                if(outcome.getHealthPoints() > 0){
+                    result += " You feel a little better.";
+                }
+                else{
+                    result += " That was a mistake.";
+                }
+
+                return result;
+            }
+            default -> {
+                return " ";
+            }
+        }
+    }
+
+
+    public String getHealth(){
+        if(player.getHealth() >= 100){
+            return player.getHealth() + " - You are in perfect health.";
+        }
+        else if(player.getHealth() >= 50 && player.getHealth() < 100){
+            return player.getHealth() + " - You are in good health, but avoid fighting right now.";
+        }
+        else if(player.getHealth() >= 25 && player.getHealth() < 50){
+            return player.getHealth() + " - You are wounded - find something healthy to eat.";
+        }
+        else if(player.getHealth() >= 1 && player.getHealth() < 25){
+            return player.getHealth() + " - You are barely alive.";
+        }
+        else{
+            return player.getHealth() + " - You should be dead.";
+        }
+    }
+
     public String look(){
         String result = "You are in " + player.getCurrentRoom().getName() + "\n"
                 + player.getCurrentRoom().getDescription();

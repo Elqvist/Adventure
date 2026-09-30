@@ -20,9 +20,9 @@ public class GameMap {
 
         Room room3 = new Room("The Kitchen", "A small, abandoned kitchen with rusty pots, broken chairs, and a cold fireplace.");
         Item knife = new Item("knife", "a small kitchen knife");
-        Item matches = new Item("matches", "a box of matches");
+        Food moldyBread = new Food("bread", "expired bread covered in mold", -25);
         room3.addItem(knife);
-        room3.addItem(matches);
+        room3.addItem(moldyBread);
 
         Room room4 = new Room("The Basement", "A cold and damp basement filled with wooden crates and strange noises in the darkness.");
         Item crowbar = new Item("crowbar", "a heavy iron crowbar");
@@ -31,26 +31,26 @@ public class GameMap {
         room4.addItem(rope);
 
         Room room5 = new Room("The Secret Room", "A hidden room behind a bookshelf, containing a mysterious table.");
-        Item crystal = new Item("crystal", "a glowing blue crystal");
+        Food goldenApple = new Food("golden apple", "a glowing golden apple", 50);
         Item secretKey = new Item("secret key", "a small key with a strange symbol");
-        room5.addItem(crystal);
+        room5.addItem(goldenApple);
         room5.addItem(secretKey);
 
         Room room6 = new Room("The Bedroom", "A quiet bedroom with an old bed and a cracked mirror.");
         Item locket = new Item("locket", "a silver locket with an engraved symbol");
-        Item cookies = new Item("cookies", "a cake with stale cookies");
+        Food cookies = new Food("cookies", "a plate with stale cookies", 10);
         room6.addItem(locket);
         room6.addItem(cookies);
 
         Room room7 = new Room("The Garden", "An overgrown garden surrounded by high stone walls and strange, glowing flowers.");
-        Item apple = new Item("Apple", "a shiny red apple");
+        Food apple = new Food("Apple", "a shiny red apple", 25);
         Item shovel = new Item("shovel", "a muddy garden shovel");
         room7.addItem(apple);
         room7.addItem(shovel);
 
         Room room8 = new Room("The Laboratory", "A dusty laboratory filled with strange bottles, old notes, and mysterious equipment.");
-        Item redPotion = new Item("red potion", "a small bottle of red potion");
-        Item bluePotion = new Item("blue potion", "a small bottle of blue potion");
+        Food redPotion = new Food("red potion", "a small bottle of red potion", 50);
+        Food bluePotion = new Food("blue potion", "a small bottle of blue potion", -50);
         room8.addItem(redPotion);
         room8.addItem(bluePotion);
 
