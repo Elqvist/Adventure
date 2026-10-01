@@ -49,10 +49,10 @@ public class GameMap {
         room7.addItem(shovel);
 
         Room room8 = new Room("The Laboratory", "A dusty laboratory filled with strange bottles, old notes, and mysterious equipment.");
-        Food redPotion = new Food("red potion", "a small bottle of red potion", 50);
-        Food bluePotion = new Food("blue potion", "a small bottle of blue potion", -50);
-        room8.addItem(redPotion);
-        room8.addItem(bluePotion);
+        Food redShroom = new Food("red mushroom", "a small red mushroom with white spots", 50);
+        Food blackShroom = new Food("blue mushroom", "a small black mushroom with a skull on it", -50);
+        room8.addItem(redShroom);
+        room8.addItem(blackShroom);
 
         Room room9 = new Room("The Tower", "A narrow stone tower with a spiral staircase leading to a small room overlooking the land.");
         Item lens = new Item("lens", "a polished telescope lens");
