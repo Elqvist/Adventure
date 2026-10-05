@@ -93,6 +93,8 @@ public class UserInterface {
         System.out.println("Eat: Eats a suitable item directly from your inventory or from the room");
         System.out.println("Inventory: View items in your inventory");
         System.out.println("Health: Shows your current health status");
+        System.out.println("Equip: Equips a weapon in your inventory");
+        System.out.println("Attack: Attacks an enemy if a weapon is equipped");
         System.out.println();
     }
 
