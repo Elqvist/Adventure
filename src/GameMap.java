@@ -19,13 +19,13 @@ public class GameMap {
         room2.addItem(lighter);
 
         Room room3 = new Room("The Kitchen", "A small, abandoned kitchen with rusty pots, broken chairs, and a cold fireplace.");
-        Item knife = new Item("knife", "a small kitchen knife");
+        Weapon knife = new MeleeWeapon("knife", "a small kitchen knife", 10);
         Food moldyBread = new Food("bread", "expired bread covered in mold", -25);
         room3.addItem(knife);
         room3.addItem(moldyBread);
 
         Room room4 = new Room("The Basement", "A cold and damp basement filled with wooden crates and strange noises in the darkness.");
-        Item crowbar = new Item("crowbar", "a heavy iron crowbar");
+        Weapon crowbar = new MeleeWeapon("crowbar", "a heavy iron crowbar", 5);
         Item rope = new Item("rope", "a long coiled rope");
         room4.addItem(crowbar);
         room4.addItem(rope);
@@ -39,8 +39,10 @@ public class GameMap {
         Room room6 = new Room("The Bedroom", "A quiet bedroom with an old bed and a cracked mirror.");
         Item locket = new Item("locket", "a silver locket with an engraved symbol");
         Food cookies = new Food("cookies", "a plate with stale cookies", 10);
+        Weapon pistol = new RangedWeapon("pistol", "an old pistol from the war", 20, 5);
         room6.addItem(locket);
         room6.addItem(cookies);
+        room6.addItem(pistol);
 
         Room room7 = new Room("The Garden", "An overgrown garden surrounded by high stone walls and strange, glowing flowers.");
         Food apple = new Food("Apple", "a shiny red apple", 25);

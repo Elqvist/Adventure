@@ -28,6 +28,9 @@ public class UserInterface {
             else if(decision.length() >= 4 && decision.substring(0, 4).equalsIgnoreCase("eat ")){
                 System.out.println(adventure.eat(decision.substring(4)));
             }
+            else if(decision.length() >= 6 && decision.substring(0, 6).equalsIgnoreCase("equip ")){
+                System.out.println(adventure.equip(decision.substring(6)));
+            }
             else{
                 switch(decision){
                     case "go north", "north" -> {
@@ -62,9 +65,11 @@ public class UserInterface {
                             System.out.println("You cannot go this way!");
                         }
                     }
+                    case "attack" -> System.out.println(adventure.attack());
                     case "health", "show health" -> System.out.println(adventure.getHealth());
                     case "look", "look around" -> System.out.println(adventure.look());
                     case "inventory" -> System.out.println(adventure.printInv());
+                    case "equipped" -> System.out.println(adventure.getEquipped());
                     case "help" -> help();
                     default -> System.out.println("Command not found! Write help for instructions.");
                 }

@@ -55,6 +55,14 @@ public class Adventure {
         }
     }
 
+    public String getEquipped(){
+        if(player.getEquipped() == null){
+            return "You currently have no weapons equipped";
+        }
+        else{
+            return "You have the " + player.getEquipped().getShortName() + " equipped";
+        }
+    }
 
     public String getHealth(){
         if(player.getHealth() >= 100){
@@ -90,6 +98,35 @@ public class Adventure {
         }
 
         return result;
+    }
+
+    public String equip(String shortName){
+        Item item = player.findItem(shortName);
+
+        if(item == null){
+            return "You do not have " + shortName + " in your inventory";
+        }
+
+        if(!(item instanceof Weapon)){
+            return "The " + shortName + " is not a weapon";
+        }
+
+        player.equip(shortName);
+        return "You have equipped " + item.getLongName();
+
+    }
+
+    public String attack(){
+        if(player.getEquipped() == null){
+            return "You have nothing to attack with";
+        }
+
+        if(!player.getEquipped().canUse()){
+            return "You have no more ammunition for this weapon";
+        }
+
+        player.getEquipped().use();
+        return "You " + player.getEquipped().getAttackVerb() + " the monster for " + player.getEquipped().getDamage() + " HP. \n" + player.getEquipped().getUsesLeftText();
     }
 
     public String take(String shortName){
