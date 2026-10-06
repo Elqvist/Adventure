@@ -2,11 +2,21 @@ public class Adventure {
 
     private GameMap gameMap;
     private Player player;
+    private Boolean gameRunning = true;
+
 
     public Adventure() {
         gameMap = new GameMap();
         gameMap.buildMap();
         player = new Player(gameMap.getStartRoom());
+    }
+
+    public Boolean getGameRunning() {
+        return gameRunning;
+    }
+
+    public void setGameRunning(Boolean gameRunning) {
+        this.gameRunning = gameRunning;
     }
 
     public boolean go(String direction){
@@ -97,6 +107,12 @@ public class Adventure {
             result += "\n- " + item.getLongName();
         }
 
+        if(!(player.getCurrentRoom().getEnemies() == null)){
+            for(Enemy enemy : player.getCurrentRoom().getEnemies()){
+                result += "\n\nBeware! " + enemy.getLongName() + " with " + enemy.getHealth() + " HP" + "\n" + enemy.getDescription();
+            }
+        }
+
         return result;
     }
 
@@ -116,7 +132,37 @@ public class Adventure {
 
     }
 
-    public String attack(){
+    public String attack(String shortName){
+
+        switch(player.attack(shortName)){
+            case NO_WEAPON -> {
+                return "You have nothing to attack with";
+            }
+            case WEAPON_EMPTY -> {
+                return "You have no more ammunition for this weapon";
+            }
+            case NO_ENEMY -> {
+                return "There are no enemies to attack in this room";
+            }
+            case ENEMY_HIT -> {
+                Enemy enemy = player.getCurrentRoom().findEnemy(shortName);
+
+                String result = "";
+                result += "You " + player.getEquipped().getAttackVerb() + " the " + enemy.getShortName() + " for " + player.getEquipped().getDamage() + " HP. " + player.getEquipped().getUsesLeftText();
+                result += "\nThe " + enemy.getShortName() + " " + enemy.getWeapon().getAttackVerb() + " you for " + enemy.getWeapon().getDamage() + " HP.";
+                result += "\n\nYou have " + player.getHealth() + " HP remaining";
+                result += "\nThe " + enemy.getShortName() + " has " + enemy.getHealth() + " HP remaining";
+                return result;
+            }
+            case ENEMY_DIED -> {
+                return "You killed the " + shortName + ". Take a look around, they might have dropped something";
+            }
+            case PLAYER_DIED -> {
+                gameRunning = false;
+                return "You died. Try again";
+            }
+        }
+
         if(player.getEquipped() == null){
             return "You have nothing to attack with";
         }

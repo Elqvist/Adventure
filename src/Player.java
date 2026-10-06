@@ -61,6 +61,35 @@ public class Player {
         }
     }
 
+    public AttackResult attack(String shortName){
+        Enemy enemy = currentRoom.findEnemy(shortName);
+        if(enemy == null){
+            return AttackResult.NO_ENEMY;
+        }
+        if(equipped == null){
+            return AttackResult.NO_WEAPON;
+        }
+        if(!equipped.canUse()){
+            return AttackResult.WEAPON_EMPTY;
+        }
+
+        enemy.hit(equipped.getDamage());
+        equipped.use();
+
+        if(enemy.getHealth() <= 0){
+            currentRoom.addItem(enemy.getWeapon());
+            currentRoom.removeEnemy(enemy);
+            return AttackResult.ENEMY_DIED;
+        }
+
+        health -= enemy.getWeapon().getDamage();
+
+        if(health <= 0){
+            return AttackResult.PLAYER_DIED;
+        }
+
+        return AttackResult.ENEMY_HIT;
+    }
 
     public boolean move(String direction){
         Room desiredRoom = switch (direction){

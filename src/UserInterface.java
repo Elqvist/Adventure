@@ -10,6 +10,30 @@ public class UserInterface {
         boolean exit = false;
 
         while(!exit){
+            System.out.println("\n==============================");
+            System.out.println("Welcome to our adventure game!");
+            System.out.println("==============================");
+            System.out.println("\n1. Start game");
+            System.out.println("2. Help");
+            System.out.println("3. Credits");
+            System.out.println("4. Exit");
+            System.out.print("\nEnter: ");
+            String choice = scanner.nextLine();
+            System.out.println();
+
+            switch(choice){
+                case "1" -> startGame();
+                case "2" -> help();
+                case "3" -> credits();
+                case "4" -> exit = true;
+                default -> System.out.println("Command not found!");
+            }
+        }
+    }
+
+    public void startGame(){
+        System.out.println(adventure.look());
+        while(adventure.getGameRunning()){
 
             System.out.println();
             System.out.print("What do you want to do? ");
@@ -17,7 +41,7 @@ public class UserInterface {
 
             if(decision.equals("exit")){
                 System.out.println("Exiting game!");
-                exit = true;
+                adventure.setGameRunning(false);
             }
             else if(decision.length() >= 5 && decision.substring(0, 5).equalsIgnoreCase("take ")){
                 System.out.println(adventure.take(decision.substring(5)));
@@ -30,6 +54,9 @@ public class UserInterface {
             }
             else if(decision.length() >= 6 && decision.substring(0, 6).equalsIgnoreCase("equip ")){
                 System.out.println(adventure.equip(decision.substring(6)));
+            }
+            else if(decision.length() >= 7 && decision.substring(0, 7).equalsIgnoreCase("attack ")){
+                System.out.println(adventure.attack(decision.substring(7)));
             }
             else{
                 switch(decision){
@@ -65,7 +92,6 @@ public class UserInterface {
                             System.out.println("You cannot go this way!");
                         }
                     }
-                    case "attack" -> System.out.println(adventure.attack());
                     case "health", "show health" -> System.out.println(adventure.getHealth());
                     case "look", "look around" -> System.out.println(adventure.look());
                     case "inventory" -> System.out.println(adventure.printInv());
@@ -74,7 +100,6 @@ public class UserInterface {
                     default -> System.out.println("Command not found! Write help for instructions.");
                 }
             }
-
         }
     }
 
@@ -98,5 +123,13 @@ public class UserInterface {
         System.out.println();
     }
 
+    public void credits(){
+        System.out.println("=========");
+        System.out.println("Made by: ");
+        System.out.println("Nikolai");
+        System.out.println("Malthe");
+        System.out.println("Emil");
+        System.out.println("=========");
+    }
 
 }
