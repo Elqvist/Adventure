@@ -1,7 +1,7 @@
 public class Adventure {
 
-    private GameMap gameMap;
-    private Player player;
+    private final GameMap gameMap;
+    private final Player player;
     private Boolean gameRunning = true;
 
 
