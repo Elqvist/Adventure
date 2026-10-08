@@ -74,6 +74,10 @@ public class UserInterface {
                 startGame();
             }
         }
+
+        if (adventure.getGameRunning() == false){
+            credits();
+        }
     }
 
     public void help() {
