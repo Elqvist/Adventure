@@ -128,7 +128,7 @@ public class Player {
         return AttackResult.ENEMY_HIT;
     }
 
-    public boolean move(String direction) {
+    public RoomResult move(String direction) {
         Room desiredRoom = switch (direction) {
             case "north" -> currentRoom.getNorth();
             case "east" -> currentRoom.getEast();
@@ -137,11 +137,20 @@ public class Player {
             default -> null;
         };
 
-        if (desiredRoom != null) {
+        if(desiredRoom.getName().equalsIgnoreCase("exit") && !desiredRoom.isLocked()){
+            return RoomResult.EXIT;
+        } else if(desiredRoom != null && !desiredRoom.isLocked()) {
             currentRoom = desiredRoom;
-            return true;
+            return RoomResult.OPEN;
+        } else if(desiredRoom != null && desiredRoom.isLocked()){
+            if(findItem("key") != null){
+                removeItem(findItem("key"));
+                desiredRoom.setLocked(false);
+                return RoomResult.UNLOCKED;
+            }
+            return RoomResult.LOCKED;
         } else {
-            return false;
+            return RoomResult.CANNOT;
         }
     }
 

@@ -23,8 +23,27 @@ public class Adventure {
         return player.getHealth();
     }
 
-    public boolean go(String direction) {
-        return player.move(direction);
+    public String go(String direction) {
+
+        switch(player.move(direction)){
+            case OPEN -> {
+                return look();
+            }
+            case LOCKED -> {
+                return "The door seems to be locked. You might need a key to open it";
+            }
+            case UNLOCKED -> {
+                return "The key turned and it seems that the door is now unlocked";
+            }
+            case CANNOT -> {
+                return "You can't go this way";
+            }
+            case EXIT -> {
+                gameRunning = false;
+                return "Congratulations! You won the game";
+            }
+        }
+        return null;
     }
 
     public String printInv() {

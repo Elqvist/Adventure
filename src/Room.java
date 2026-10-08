@@ -8,6 +8,7 @@ public class Room {
     private Room east;
     private Room south;
     private Room west;
+    private boolean isLocked = false;
 
     private final ArrayList<Item> items;
     private final ArrayList<Enemy> enemies;
@@ -28,6 +29,14 @@ public class Room {
         }
 
         return null;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
     }
 
     public void addItem(Item item) {

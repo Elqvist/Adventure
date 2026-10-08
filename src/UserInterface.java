@@ -52,36 +52,10 @@ public class UserInterface {
                 System.out.println(adventure.equip(decision.substring(6)));
             } else if (decision.length() >= 7 && decision.substring(0, 7).equalsIgnoreCase("attack ")) {
                 System.out.println(adventure.attack(decision.substring(7)));
+            } else if (decision.length() >= 3 && decision.substring(0, 3).equalsIgnoreCase("go ")){
+                System.out.println(adventure.go(decision.substring(3)));
             } else {
                 switch (decision) {
-                    case "go north", "north" -> {
-                        if (adventure.go("north")) {
-                            System.out.println(adventure.look());
-                        } else {
-                            System.out.println("You cannot go this way!");
-                        }
-                    }
-                    case "go south", "south" -> {
-                        if (adventure.go("south")) {
-                            System.out.println(adventure.look());
-                        } else {
-                            System.out.println("You cannot go this way!");
-                        }
-                    }
-                    case "go west", "west" -> {
-                        if (adventure.go("west")) {
-                            System.out.println(adventure.look());
-                        } else {
-                            System.out.println("You cannot go this way!");
-                        }
-                    }
-                    case "go east", "east" -> {
-                        if (adventure.go("east")) {
-                            System.out.println(adventure.look());
-                        } else {
-                            System.out.println("You cannot go this way!");
-                        }
-                    }
                     case "attack" -> System.out.println(adventure.attack());
                     case "health", "show health" -> System.out.println(adventure.getHealth());
                     case "look", "look around" -> System.out.println(adventure.look());
