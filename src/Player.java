@@ -82,7 +82,7 @@ public class Player {
 
         if (enemy.getHealth() <= 0) {
             lastEnemyKilledName = enemy.getShortName();
-            enemy.die(enemy);
+            enemy.die();
             return AttackResult.ENEMY_DIED;
         }
 
@@ -115,7 +115,7 @@ public class Player {
 
         if (enemy.getHealth() <= 0) {
             lastEnemyKilledName = enemy.getShortName();
-            enemy.die(enemy);
+            enemy.die();
             return AttackResult.ENEMY_DIED;
         }
 
@@ -137,21 +137,26 @@ public class Player {
             default -> null;
         };
 
-        if(desiredRoom.getName().equalsIgnoreCase("exit") && !desiredRoom.isLocked()){
-            return RoomResult.EXIT;
-        } else if(desiredRoom != null && !desiredRoom.isLocked()) {
-            currentRoom = desiredRoom;
-            return RoomResult.OPEN;
-        } else if(desiredRoom != null && desiredRoom.isLocked()){
-            if(findItem("key") != null){
-                removeItem(findItem("key"));
-                desiredRoom.setLocked(false);
-                return RoomResult.UNLOCKED;
+        if(desiredRoom != null){
+            if(desiredRoom.getName().equals("Exit") && !desiredRoom.isLocked()){
+                return RoomResult.EXIT;
+            } else if(!desiredRoom.isLocked()) {
+                currentRoom = desiredRoom;
+                return RoomResult.OPEN;
+            } else if(desiredRoom.isLocked()){
+                if(desiredRoom.getName().equals("The Secret Room")){
+                    return RoomResult.SECRETROOM;
+                } else if(desiredRoom.getName().equals("Exit")){
+                    if(findItem("key") != null){
+                        removeItem(findItem("key"));
+                        desiredRoom.setLocked(false);
+                        return RoomResult.UNLOCKED;
+                    }
+                    return RoomResult.LOCKED;
+                }
             }
-            return RoomResult.LOCKED;
-        } else {
-            return RoomResult.CANNOT;
         }
+        return RoomResult.CANNOT;
     }
 
     public void addItem(Item item) {

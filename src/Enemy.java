@@ -15,6 +15,10 @@ public class Enemy {
         this.room = room;
     }
 
+    public boolean isDead(){
+        return this.health <= 0;
+    }
+
     public void hit(int damage) {
         this.health -= damage;
     }
@@ -23,9 +27,9 @@ public class Enemy {
         return health -= this.weapon.getDamage();
     }
 
-    public void die(Enemy enemy) {
-        room.addItem(enemy.getWeapon());
-        room.removeEnemy(enemy);
+    public void die() {
+        room.addItem(this.getWeapon());
+        room.removeEnemy(this);
     }
 
     public String getShortName() {

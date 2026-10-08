@@ -1,9 +1,10 @@
+import java.util.ArrayList;
+
 public class Adventure {
 
     private final GameMap gameMap;
     private final Player player;
     private Boolean gameRunning = true;
-
 
     public Adventure() {
         gameMap = new GameMap();
@@ -31,6 +32,13 @@ public class Adventure {
             }
             case LOCKED -> {
                 return "The door seems to be locked. You might need a key to open it";
+            }
+            case SECRETROOM -> {
+                if(gameMap.areAllEnemiesDead()){
+                    gameMap.getSecretRoom().setLocked(false);
+                    return "You pull one of the books on the bookshelf and it slides open revealing a hidden room";
+                }
+                return "There is a weird looking bookshelf here. It looks as if it has been moved before";
             }
             case UNLOCKED -> {
                 return "The key turned and it seems that the door is now unlocked";
@@ -171,15 +179,20 @@ public class Adventure {
             case ENEMY_HIT -> {
                 Enemy enemy = player.getCurrentRoom().findEnemy(shortName);
 
-                String result = "";
-                result += "You " + player.getEquipped().getAttackVerb() + " the " + enemy.getShortName() + " for " + player.getEquipped().getDamage() + " HP. " + player.getEquipped().getUsesLeftText();
+                String result = "You " + player.getEquipped().getAttackVerb() + " the " + enemy.getShortName() + " for " + player.getEquipped().getDamage() + " HP. " + player.getEquipped().getUsesLeftText();
                 result += "\nThe " + enemy.getShortName() + " " + enemy.getWeapon().getAttackVerb() + " you for " + enemy.getWeapon().getDamage() + " HP.";
                 result += "\n\nYou have " + player.getHealth() + " HP remaining";
                 result += "\nThe " + enemy.getShortName() + " has " + enemy.getHealth() + " HP remaining";
                 return result;
             }
             case ENEMY_DIED -> {
-                return "You killed the " + player.getLastEnemyKilledName() + ". Take a look around, they might have dropped something";
+                String result = "You killed the " + player.getLastEnemyKilledName() + ". Take a look around, they might have dropped something";
+
+                if(gameMap.areAllEnemiesDead()){
+                    result += "\nThe " + player.getLastEnemyKilledName() + " whispered something about the bookshelf in the library as they lay dying. You might want to go and check it out";
+                }
+
+                return result;
             }
             case PLAYER_DIED -> {
                 gameRunning = false;
@@ -226,7 +239,13 @@ public class Adventure {
                 return result;
             }
             case ENEMY_DIED -> {
-                return "You killed the " + player.getLastEnemyKilledName() + ". Take a look around, they might have dropped something";
+                String result = "You killed the " + player.getLastEnemyKilledName() + ". Take a look around, they might have dropped something";
+
+                if(gameMap.areAllEnemiesDead()){
+                    result += "\nThe " + player.getLastEnemyKilledName() + " whispered something about the bookshelf in the library as they lay dying. You might want to go and check it out";
+                }
+
+                return result;
             }
             case PLAYER_DIED -> {
                 gameRunning = false;
