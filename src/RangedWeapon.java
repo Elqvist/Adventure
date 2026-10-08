@@ -1,4 +1,4 @@
-public class RangedWeapon extends Weapon{
+public class RangedWeapon extends Weapon {
     private int ammunition;
 
     public RangedWeapon(String shortName, String longName, int damage, int ammunition) {
@@ -7,12 +7,12 @@ public class RangedWeapon extends Weapon{
     }
 
     @Override
-    public String getAttackVerb(){
+    public String getAttackVerb() {
         return "shot";
     }
 
     @Override
-    public String getUsesLeftText(){
+    public String getUsesLeftText() {
         return "You have " + ammunition + " bullets left";
     }
 

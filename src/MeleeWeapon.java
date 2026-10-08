@@ -1,4 +1,4 @@
-public class MeleeWeapon extends Weapon{
+public class MeleeWeapon extends Weapon {
     public MeleeWeapon(String shortName, String longName, int damage) {
         super(shortName, longName, damage);
     }
@@ -9,12 +9,12 @@ public class MeleeWeapon extends Weapon{
     }
 
     @Override
-    public String getUsesLeftText(){
+    public String getUsesLeftText() {
         return "";
     }
 
     @Override
-    public String getAttackVerb(){
+    public String getAttackVerb() {
         return "attacked";
     }
 

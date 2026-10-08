@@ -3,11 +3,12 @@ import java.util.ArrayList;
 public class Player {
 
     private Room currentRoom;
-    private ArrayList<Item> inventory;
+    private final ArrayList<Item> inventory;
     private int health = 100;
     private Weapon equipped;
+    private String lastEnemyKilledName;
 
-    public Player(Room startRoom){
+    public Player(Room startRoom) {
         currentRoom = startRoom;
         this.inventory = new ArrayList<>();
     }
@@ -18,6 +19,10 @@ public class Player {
 
     public int getHealth() {
         return health;
+    }
+
+    public String getLastEnemyKilledName() {
+        return lastEnemyKilledName;
     }
 
     public Weapon getEquipped() {
@@ -43,56 +48,88 @@ public class Player {
         if (item == null) {
             return new EatOutcome(EatResult.NOT_FOUND, null, 0);
         }
-        if (!(item instanceof Food)) {
+        if (!(item instanceof Food food)) {
             return new EatOutcome(EatResult.NOT_FOOD, item.getLongName(), 0);
         }
 
-        Food food = (Food) item;
         health += food.getHealthPoints();
         removeItem(food);
         currentRoom.removeItem(food);
         return new EatOutcome(EatResult.EATEN, food.getLongName(), food.getHealthPoints());
     }
 
-    public void equip(String shortName){
+    public void equip(String shortName) {
         Item item = findItem(shortName);
         if (item instanceof Weapon weapon) {
             equipped = weapon;
         }
     }
 
-    public AttackResult attack(String shortName){
+    public AttackResult attack(String shortName) {
         Enemy enemy = currentRoom.findEnemy(shortName);
-        if(enemy == null){
+        if (enemy == null) {
             return AttackResult.NO_ENEMY;
         }
-        if(equipped == null){
+        if (equipped == null) {
             return AttackResult.NO_WEAPON;
         }
-        if(!equipped.canUse()){
+        if (!equipped.canUse()) {
             return AttackResult.WEAPON_EMPTY;
         }
 
         enemy.hit(equipped.getDamage());
         equipped.use();
 
-        if(enemy.getHealth() <= 0){
-            currentRoom.addItem(enemy.getWeapon());
-            currentRoom.removeEnemy(enemy);
+        if (enemy.getHealth() <= 0) {
+            lastEnemyKilledName = enemy.getShortName();
+            enemy.die(enemy);
             return AttackResult.ENEMY_DIED;
         }
 
-        health -= enemy.getWeapon().getDamage();
+        health = enemy.attack(health);
 
-        if(health <= 0){
+        if (health <= 0) {
             return AttackResult.PLAYER_DIED;
         }
 
         return AttackResult.ENEMY_HIT;
     }
 
-    public boolean move(String direction){
-        Room desiredRoom = switch (direction){
+    public AttackResult attack() {
+        Enemy enemy = null;
+        if (!(currentRoom.getEnemies().isEmpty())) {
+            enemy = currentRoom.getEnemies().getFirst();
+        }
+        if (enemy == null) {
+            return AttackResult.NO_ENEMY;
+        }
+        if (equipped == null) {
+            return AttackResult.NO_WEAPON;
+        }
+        if (!equipped.canUse()) {
+            return AttackResult.WEAPON_EMPTY;
+        }
+
+        enemy.hit(equipped.getDamage());
+        equipped.use();
+
+        if (enemy.getHealth() <= 0) {
+            lastEnemyKilledName = enemy.getShortName();
+            enemy.die(enemy);
+            return AttackResult.ENEMY_DIED;
+        }
+
+        health = enemy.attack(health);
+
+        if (health <= 0) {
+            return AttackResult.PLAYER_DIED;
+        }
+
+        return AttackResult.ENEMY_HIT;
+    }
+
+    public boolean move(String direction) {
+        Room desiredRoom = switch (direction) {
             case "north" -> currentRoom.getNorth();
             case "east" -> currentRoom.getEast();
             case "south" -> currentRoom.getSouth();
@@ -100,30 +137,29 @@ public class Player {
             default -> null;
         };
 
-        if(desiredRoom != null){
+        if (desiredRoom != null) {
             currentRoom = desiredRoom;
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    public void addItem(Item item){
+    public void addItem(Item item) {
         inventory.add(item);
     }
 
-    public void removeItem(Item item){
+    public void removeItem(Item item) {
         inventory.remove(item);
     }
 
-    public ArrayList<Item> getInv(){
+    public ArrayList<Item> getInv() {
         return inventory;
     }
 
-    public Item takeItem(String shortName){
+    public Item takeItem(String shortName) {
         Item desiredItem = currentRoom.findItem(shortName);
-        if(desiredItem != null){
+        if (desiredItem != null) {
             addItem(desiredItem);
             currentRoom.removeItem(desiredItem);
         }
@@ -132,19 +168,19 @@ public class Player {
 
     }
 
-    public Item dropItem(String shortName){
+    public Item dropItem(String shortName) {
         Item desiredItem = null;
-            for(Item item : inventory){
-                if(item.getShortName().equalsIgnoreCase(shortName)){
-                    currentRoom.addItem(item);
-                    desiredItem = item;
-                    if(equipped == desiredItem){
-                        equipped = null;
-                    }
+        for (Item item : inventory) {
+            if (item.getShortName().equalsIgnoreCase(shortName)) {
+                currentRoom.addItem(item);
+                desiredItem = item;
+                if (equipped == desiredItem) {
+                    equipped = null;
                 }
             }
-            removeItem(desiredItem);
-            return desiredItem;
+        }
+        removeItem(desiredItem);
+        return desiredItem;
     }
 
 }

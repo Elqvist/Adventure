@@ -2,14 +2,14 @@ import java.util.Scanner;
 
 public class UserInterface {
 
-    private Scanner scanner = new Scanner(System.in);
-    private Adventure adventure = new Adventure();
+    private final Scanner scanner = new Scanner(System.in);
+    private Adventure adventure;
 
-    public void startProgram(){
+    public void startProgram() {
 
         boolean exit = false;
 
-        while(!exit){
+        while (!exit) {
             System.out.println("\n==============================");
             System.out.println("Welcome to our adventure game!");
             System.out.println("==============================");
@@ -21,7 +21,7 @@ public class UserInterface {
             String choice = scanner.nextLine();
             System.out.println();
 
-            switch(choice){
+            switch (choice) {
                 case "1" -> startGame();
                 case "2" -> help();
                 case "3" -> credits();
@@ -31,67 +31,58 @@ public class UserInterface {
         }
     }
 
-    public void startGame(){
+    public void startGame() {
+        adventure = new Adventure();
         System.out.println(adventure.look());
-        while(adventure.getGameRunning()){
-
+        while (adventure.getGameRunning() && adventure.getPlayerHealth() > 0) {
             System.out.println();
             System.out.print("What do you want to do? ");
             String decision = scanner.nextLine().trim().toLowerCase();
 
-            if(decision.equals("exit")){
+            if (decision.equals("exit")) {
                 System.out.println("Exiting game!");
                 adventure.setGameRunning(false);
-            }
-            else if(decision.length() >= 5 && decision.substring(0, 5).equalsIgnoreCase("take ")){
+            } else if (decision.length() >= 5 && decision.substring(0, 5).equalsIgnoreCase("take ")) {
                 System.out.println(adventure.take(decision.substring(5)));
-            }
-            else if(decision.length() >= 5 && decision.substring(0, 5).equalsIgnoreCase("drop ")){
+            } else if (decision.length() >= 5 && decision.substring(0, 5).equalsIgnoreCase("drop ")) {
                 System.out.println(adventure.drop(decision.substring(5)));
-            }
-            else if(decision.length() >= 4 && decision.substring(0, 4).equalsIgnoreCase("eat ")){
+            } else if (decision.length() >= 4 && decision.substring(0, 4).equalsIgnoreCase("eat ")) {
                 System.out.println(adventure.eat(decision.substring(4)));
-            }
-            else if(decision.length() >= 6 && decision.substring(0, 6).equalsIgnoreCase("equip ")){
+            } else if (decision.length() >= 6 && decision.substring(0, 6).equalsIgnoreCase("equip ")) {
                 System.out.println(adventure.equip(decision.substring(6)));
-            }
-            else if(decision.length() >= 7 && decision.substring(0, 7).equalsIgnoreCase("attack ")){
+            } else if (decision.length() >= 7 && decision.substring(0, 7).equalsIgnoreCase("attack ")) {
                 System.out.println(adventure.attack(decision.substring(7)));
-            }
-            else{
-                switch(decision){
+            } else {
+                switch (decision) {
                     case "go north", "north" -> {
-                        if(adventure.go("north")){
+                        if (adventure.go("north")) {
                             System.out.println(adventure.look());
-                        }
-                        else{
+                        } else {
                             System.out.println("You cannot go this way!");
                         }
                     }
                     case "go south", "south" -> {
-                        if(adventure.go("south")){
+                        if (adventure.go("south")) {
                             System.out.println(adventure.look());
-                        }
-                        else{
+                        } else {
                             System.out.println("You cannot go this way!");
                         }
                     }
                     case "go west", "west" -> {
-                        if(adventure.go("west")){
+                        if (adventure.go("west")) {
                             System.out.println(adventure.look());
-                        }
-                        else{
+                        } else {
                             System.out.println("You cannot go this way!");
                         }
                     }
                     case "go east", "east" -> {
-                        if(adventure.go("east")){
+                        if (adventure.go("east")) {
                             System.out.println(adventure.look());
-                        }
-                        else{
+                        } else {
                             System.out.println("You cannot go this way!");
                         }
                     }
+                    case "attack" -> System.out.println(adventure.attack());
                     case "health", "show health" -> System.out.println(adventure.getHealth());
                     case "look", "look around" -> System.out.println(adventure.look());
                     case "inventory" -> System.out.println(adventure.printInv());
@@ -101,9 +92,17 @@ public class UserInterface {
                 }
             }
         }
+        if (adventure.getPlayerHealth() <= 0) {
+            System.out.println("\nYou died!");
+            System.out.println("\nTry again? Y/N");
+            String decision = scanner.nextLine().trim();
+            if (decision.equalsIgnoreCase("y")) {
+                startGame();
+            }
+        }
     }
 
-    public void help(){
+    public void help() {
         System.out.println("Directions:");
         System.out.println("North: Go north");
         System.out.println("East: Go east");
@@ -123,7 +122,7 @@ public class UserInterface {
         System.out.println();
     }
 
-    public void credits(){
+    public void credits() {
         System.out.println("=========");
         System.out.println("Made by: ");
         System.out.println("Nikolai");

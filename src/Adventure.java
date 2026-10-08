@@ -19,28 +19,38 @@ public class Adventure {
         this.gameRunning = gameRunning;
     }
 
-    public boolean go(String direction){
+    public int getPlayerHealth() {
+        return player.getHealth();
+    }
+
+    public boolean go(String direction) {
         return player.move(direction);
     }
 
-    public String printInv(){
+    public String printInv() {
         String result = "\nInventory: ";
 
-        if(player.getInv().isEmpty()){
+        if (player.getInv().isEmpty()) {
             result = "\nThere are no items in your inventory";
         }
 
-        for(Item item : player.getInv()){
+        for (Item item : player.getInv()) {
             result += "\n- " + item.getLongName();
+        }
+
+        if (player.getEquipped() == null) {
+            result += "\nYou currently have no weapons equipped";
+        } else {
+            result += "\nYou have the " + player.getEquipped().getShortName() + " equipped";
         }
 
         return result;
     }
 
-    public String eat(String shortName){
+    public String eat(String shortName) {
         EatOutcome outcome = player.eat(shortName);
 
-        switch (outcome.getResult()){
+        switch (outcome.getResult()) {
             case NOT_FOUND -> {
                 return "There is nothing like " + shortName + " to eat around here";
             }
@@ -50,10 +60,9 @@ public class Adventure {
             case EATEN -> {
                 String result = "You ate " + outcome.getItemName() + ".";
 
-                if(outcome.getHealthPoints() > 0){
+                if (outcome.getHealthPoints() > 0) {
                     result += " You feel a little better.";
-                }
-                else{
+                } else {
                     result += " That was a mistake.";
                 }
 
@@ -65,41 +74,35 @@ public class Adventure {
         }
     }
 
-    public String getEquipped(){
-        if(player.getEquipped() == null){
+    public String getEquipped() {
+        if (player.getEquipped() == null) {
             return "You currently have no weapons equipped";
-        }
-        else{
+        } else {
             return "You have the " + player.getEquipped().getShortName() + " equipped";
         }
     }
 
-    public String getHealth(){
-        if(player.getHealth() >= 100){
+    public String getHealth() {
+        if (player.getHealth() >= 100) {
             return player.getHealth() + " - You are in perfect health.";
-        }
-        else if(player.getHealth() >= 50 && player.getHealth() < 100){
+        } else if (player.getHealth() >= 50 && player.getHealth() < 100) {
             return player.getHealth() + " - You are in good health, but avoid fighting right now.";
-        }
-        else if(player.getHealth() >= 25 && player.getHealth() < 50){
+        } else if (player.getHealth() >= 25 && player.getHealth() < 50) {
             return player.getHealth() + " - You are wounded - find something healthy to eat.";
-        }
-        else if(player.getHealth() >= 1 && player.getHealth() < 25){
+        } else if (player.getHealth() >= 1 && player.getHealth() < 25) {
             return player.getHealth() + " - You are barely alive.";
-        }
-        else{
+        } else {
             return player.getHealth() + " - You should be dead.";
         }
     }
 
-    public String look(){
+    public String look() {
         String result = "You are in " + player.getCurrentRoom().getName() + "\n"
                 + player.getCurrentRoom().getDescription();
 
-        if(player.getCurrentRoom().getItems().isEmpty()){
+        if (player.getCurrentRoom().getItems().isEmpty()) {
             result += "\nThere are no items in this room.";
-        }
-        else{
+        } else {
             result += "\nItems:";
         }
 
@@ -107,23 +110,25 @@ public class Adventure {
             result += "\n- " + item.getLongName();
         }
 
-        if(!(player.getCurrentRoom().getEnemies() == null)){
-            for(Enemy enemy : player.getCurrentRoom().getEnemies()){
+        if (!(player.getCurrentRoom().getEnemies().isEmpty())) {
+            for (Enemy enemy : player.getCurrentRoom().getEnemies()) {
                 result += "\n\nBeware! " + enemy.getLongName() + " with " + enemy.getHealth() + " HP" + "\n" + enemy.getDescription();
             }
+        } else {
+            result += "\n\nThere are no enemies around";
         }
 
         return result;
     }
 
-    public String equip(String shortName){
+    public String equip(String shortName) {
         Item item = player.findItem(shortName);
 
-        if(item == null){
+        if (item == null) {
             return "You do not have " + shortName + " in your inventory";
         }
 
-        if(!(item instanceof Weapon)){
+        if (!(item instanceof Weapon)) {
             return "The " + shortName + " is not a weapon";
         }
 
@@ -132,9 +137,9 @@ public class Adventure {
 
     }
 
-    public String attack(String shortName){
+    public String attack(String shortName) {
 
-        switch(player.attack(shortName)){
+        switch (player.attack(shortName)) {
             case NO_WEAPON -> {
                 return "You have nothing to attack with";
             }
@@ -155,7 +160,7 @@ public class Adventure {
                 return result;
             }
             case ENEMY_DIED -> {
-                return "You killed the " + shortName + ". Take a look around, they might have dropped something";
+                return "You killed the " + player.getLastEnemyKilledName() + ". Take a look around, they might have dropped something";
             }
             case PLAYER_DIED -> {
                 gameRunning = false;
@@ -163,11 +168,11 @@ public class Adventure {
             }
         }
 
-        if(player.getEquipped() == null){
+        if (player.getEquipped() == null) {
             return "You have nothing to attack with";
         }
 
-        if(!player.getEquipped().canUse()){
+        if (!player.getEquipped().canUse()) {
             return "You have no more ammunition for this weapon";
         }
 
@@ -175,30 +180,74 @@ public class Adventure {
         return "You " + player.getEquipped().getAttackVerb() + " the monster for " + player.getEquipped().getDamage() + " HP. \n" + player.getEquipped().getUsesLeftText();
     }
 
-    public String take(String shortName){
+    public String attack() {
 
-        if(player.getInv().size() < 5){
-            Item item = player.takeItem(shortName);
-            if(item != null){
-                return "You picked up the " + item.getShortName();
+        Enemy enemy = null;
+        if (!(player.getCurrentRoom().getEnemies().isEmpty())) {
+            enemy = player.getCurrentRoom().getEnemies().getFirst();
+        }
+
+        switch (player.attack()) {
+            case NO_WEAPON -> {
+                return "You have nothing to attack with";
             }
-            else{
-                return "There are no items like " + shortName + " in the room";
+            case WEAPON_EMPTY -> {
+                return "You have no more ammunition for this weapon";
+            }
+            case NO_ENEMY -> {
+                return "There are no enemies to attack in this room";
+            }
+            case ENEMY_HIT -> {
+
+                String result = "";
+                result += "\nYou " + player.getEquipped().getAttackVerb() + " the " + enemy.getShortName() + " for " + player.getEquipped().getDamage() + " HP. " + player.getEquipped().getUsesLeftText();
+                result += "\nThe " + enemy.getShortName() + " " + enemy.getWeapon().getAttackVerb() + " you for " + enemy.getWeapon().getDamage() + " HP.";
+                result += "\n\nYou have " + getPlayerHealth() + " HP remaining";
+                result += "\nThe " + enemy.getShortName() + " has " + enemy.getHealth() + " HP remaining";
+                return result;
+            }
+            case ENEMY_DIED -> {
+                return "You killed the " + player.getLastEnemyKilledName() + ". Take a look around, they might have dropped something";
+            }
+            case PLAYER_DIED -> {
+                gameRunning = false;
+                return "You died. Try again";
             }
         }
-        else{
+
+        if (player.getEquipped() == null) {
+            return "You have nothing to attack with";
+        }
+
+        if (!player.getEquipped().canUse()) {
+            return "You have no more ammunition for this weapon";
+        }
+
+        player.getEquipped().use();
+        return "You " + player.getEquipped().getAttackVerb() + " the monster for " + player.getEquipped().getDamage() + " HP. \n" + player.getEquipped().getUsesLeftText();
+    }
+
+    public String take(String shortName) {
+
+        if (player.getInv().size() < 5) {
+            Item item = player.takeItem(shortName);
+            if (item != null) {
+                return "You picked up the " + item.getShortName();
+            } else {
+                return "There are no items like " + shortName + " in the room";
+            }
+        } else {
             return "There is not enough space in your inventory";
         }
 
     }
 
-    public String drop(String shortName){
+    public String drop(String shortName) {
         Item item = player.dropItem(shortName);
 
-        if(item != null){
+        if (item != null) {
             return "You dropped the " + item.getShortName();
-        }
-        else{
+        } else {
             return "There are no items like " + shortName + " in your inventory";
         }
 

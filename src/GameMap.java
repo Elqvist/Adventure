@@ -16,14 +16,14 @@ public class GameMap {
         Item book = new Item("book", "An old dust covered book");
         Item lighter = new Item("lighter", "An antique Ronson lighter");
         Weapon ruler = new MeleeWeapon("ruler", "A wooden ruler measuring 20 cm", 2);
-        Enemy librarian = new Enemy("librarian", "An old librarian", "A dust covered old lady gripping a ruler ready to strike", 500, ruler);
+        Enemy librarian = new Enemy("librarian", "An old librarian", "A dust covered old lady gripping a ruler ready to strike", 20, ruler, room2);
         room2.addEnemy(librarian);
         room2.addItem(book);
         room2.addItem(lighter);
 
         Room room3 = new Room("The Kitchen", "A small, abandoned kitchen with rusty pots, broken chairs, and a cold fireplace.");
         Weapon knife = new MeleeWeapon("knife", "a small kitchen knife", 20);
-        Food moldyBread = new Food("bread", "expired bread covered in mold", -25);
+        Food moldyBread = new Food("bread", "expired bread covered in mold", -100);
         room3.addItem(knife);
         room3.addItem(moldyBread);
 

@@ -1,6 +1,6 @@
-public class Food extends Item{
+public class Food extends Item {
 
-    private int healthPoints;
+    private final int healthPoints;
 
     public Food(String shortName, String longName, int healthPoints) {
         super(shortName, longName);

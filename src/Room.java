@@ -1,16 +1,16 @@
 import java.util.ArrayList;
 
 public class Room {
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
 
     private Room north;
     private Room east;
     private Room south;
     private Room west;
 
-    private ArrayList<Item> items;
-    private ArrayList<Enemy> enemies;
+    private final ArrayList<Item> items;
+    private final ArrayList<Enemy> enemies;
 
     public Room(String name, String description) {
         this.name = name;
@@ -19,7 +19,7 @@ public class Room {
         this.enemies = new ArrayList<>();
     }
 
-    public Item findItem(String shortName){
+    public Item findItem(String shortName) {
         for (Item item : items) {
 
             if (item.getShortName().equalsIgnoreCase(shortName)) {
@@ -30,23 +30,23 @@ public class Room {
         return null;
     }
 
-    public void addItem(Item item){
+    public void addItem(Item item) {
         items.add(item);
     }
 
-    public void removeItem(Item item){
+    public void removeItem(Item item) {
         items.remove(item);
     }
 
-    public void addEnemy(Enemy enemy){
+    public void addEnemy(Enemy enemy) {
         enemies.add(enemy);
     }
 
-    public void removeEnemy(Enemy enemy){
+    public void removeEnemy(Enemy enemy) {
         enemies.remove(enemy);
     }
 
-    public Enemy findEnemy(String shortName){
+    public Enemy findEnemy(String shortName) {
         for (Enemy enemy : enemies) {
 
             if (enemy.getShortName().equalsIgnoreCase(shortName)) {
@@ -61,7 +61,7 @@ public class Room {
         return enemies;
     }
 
-    public ArrayList<Item> getItems(){
+    public ArrayList<Item> getItems() {
         return items;
     }
 
